@@ -52,5 +52,10 @@ namespace SimplCommerce.Module.Core.Models
 
         /// <inheritdoc />
         public string ExtensionData { get; set; }
+
+        public void SetId(long id)
+        {
+            Id = id;
+        }
     }
 }

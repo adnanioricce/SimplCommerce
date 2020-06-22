@@ -3,5 +3,6 @@
     public interface IEntityWithTypedId<TId>
     {
         TId Id { get; }
+        void SetId(TId id);
     }
 }
