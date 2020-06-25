@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SimplCommerce.Infrastructure.Data;
+using SimplCommerce.Infrastructure.Filters;
 using SimplCommerce.Infrastructure.Web.SmartTable;
 using SimplCommerce.Module.Core.Areas.Core.ViewModels;
 using SimplCommerce.Module.Core.Models;
@@ -63,8 +64,7 @@ namespace SimplCommerce.Module.Core.Areas.Core.Controllers
 
             if (param.Search.PredicateObject != null)
             {
-                dynamic search = param.Search.PredicateObject;
-
+                dynamic search = param.Search.PredicateObject;                
                 if (search.Email != null)
                 {
                     string email = search.Email;
@@ -107,12 +107,12 @@ namespace SimplCommerce.Module.Core.Areas.Core.Controllers
 
             var users = query.ToSmartTableResultNoProjection(
                 param,
-                user => new
+                user => new UserSearchResponse
                 {
-                    user.Id,
-                    user.Email,
-                    user.FullName,
-                    user.CreatedOn,
+                    Id = user.Id,
+                    Email = user.Email,
+                    FullName = user.FullName,
+                    CreatedOn = user.CreatedOn,
                     Roles = user.Roles.Select(x => x.Role.Name),
                     CustomerGroups = user.CustomerGroups.Select(x => x.CustomerGroup.Name)
                 });
@@ -148,46 +148,36 @@ namespace SimplCommerce.Module.Core.Areas.Core.Controllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Post([FromBody] UserForm model)
-        {
-            if (ModelState.IsValid)
+        {            
+            var user = new User
             {
-                var user = new User
+                UserName = model.Email,
+                Email = model.Email,
+                FullName = model.FullName,
+                PhoneNumber = model.PhoneNumber,
+                VendorId = model.VendorId
+            };                            
+            foreach (var roleId in model.RoleIds)
+            {
+                var userRole = new UserRole
                 {
-                    UserName = model.Email,
-                    Email = model.Email,
-                    FullName = model.FullName,
-                    PhoneNumber = model.PhoneNumber,
-                    VendorId = model.VendorId
+                    RoleId = roleId
                 };
 
-                foreach (var roleId in model.RoleIds)
-                {
-                    var userRole = new UserRole
-                    {
-                        RoleId = roleId
-                    };
+                user.Roles.Add(userRole);
+                userRole.User = user;
+            }                
 
-                    user.Roles.Add(userRole);
-                    userRole.User = user;
-                }
-
-                foreach (var customergroupId in model.CustomerGroupIds)
-                {
-                    var userCustomerGroup = new CustomerGroupUser
-                    {
-                        CustomerGroupId = customergroupId
-                    };
-                }
-
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    return CreatedAtAction(nameof(Get), new { id = user.Id }, null);
-                }
-
-                AddErrors(result);
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                return CreatedAtAction(nameof(Get), new { id = user.Id }, null);
             }
+
+            AddErrors(result);
+            
 
             return BadRequest(ModelState);
         }
@@ -245,31 +235,15 @@ namespace SimplCommerce.Module.Core.Areas.Core.Controllers
         }
 
         private void AddOrDeleteRoles(UserForm model, User user)
-        {
-            foreach (var roleId in model.RoleIds)
-            {
-                if (user.Roles.Any(x => x.RoleId == roleId))
-                {
-                    continue;
-                }
-
-                var userRole = new UserRole
-                {
-                    RoleId = roleId,
-                    User = user
-                };
-                user.Roles.Add(userRole);
-            }
-
-            var deletedUserRoles =
-                user.Roles.Where(userRole => !model.RoleIds.Contains(userRole.RoleId))
-                    .ToList();
-
-            foreach (var deletedUserRole in deletedUserRoles)
-            {
-                deletedUserRole.User = null;
-                user.Roles.Remove(deletedUserRole);
-            }
+        {            
+            var userRoles = model.RoleIds.Where(roleid => !user.HasRole(roleid))
+                                         .Select(roleid => new UserRole
+                                         {
+                                             RoleId = roleid,
+                                             User = user
+                                         });
+            user.AddRoles(userRoles);            
+            user.RemoveRoles(model.RoleIds);            
         }
 
         private void AddOrDeleteCustomerGroups(UserForm model, User user)

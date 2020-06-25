@@ -11,6 +11,7 @@ using SimplCommerce.Module.Core.Areas.Core.ViewModels;
 using SimplCommerce.Module.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -19,11 +20,7 @@ namespace SimplCommerce.Module.Core.Tests.Areas.Core.Controllers
 {
     public class UserApiControllerTests
     {        
-
-        private UserApiController CreateUserApiController(IRepository<User> userRepository)
-        {
-            return new UserApiController(userRepository,null);
-        }        
+           
         [Theory]
         [InlineData("sample@email.com","sample name")]
         [InlineData("", "sample name")]
@@ -32,7 +29,7 @@ namespace SimplCommerce.Module.Core.Tests.Areas.Core.Controllers
         public async Task QuickSearch_receives_UserSearchOption_object_Expected_to_return_OkObjectResult_if_has_any_data_matching_search_object(string email,string name)
         {            
             var userRepository = new FakeUserRepository();
-            var userApiController = this.CreateUserApiController(userRepository);
+            var userApiController = new UserApiController(userRepository, null);
             UserSearchOption searchOption = new UserSearchOption
             {
                 Email = email,
@@ -53,10 +50,9 @@ namespace SimplCommerce.Module.Core.Tests.Areas.Core.Controllers
         public void List_receives_SmartTableParam_with_at_least_one_predicate_with_at_least_one_field_Expected_to_return_list_of_users_that_match_object(string email, string fullname, int roleId,int customerGroupId,string createOn)
         {
             // Arrange
-            var data = Enumerable.Range(1, 15).Select(i =>
-                 new User
+            var data = new User
                  {
-                     Email = i + email,
+                     Email = email,
                      //I am curious to know what is the result of this...
                      FullName = fullname,
                      Roles = new List<UserRole>
@@ -73,11 +69,11 @@ namespace SimplCommerce.Module.Core.Tests.Areas.Core.Controllers
                              CustomerGroupId = customerGroupId
                          }
                      },
-                     CreatedOn = DateTimeOffset.Parse(createOn)
-                 });            
+                     CreatedOn = DateTimeOffset.ParseExact(createOn,"dd/MM/yyyy",CultureInfo.InvariantCulture)
+                 };            
             var userRepository = new FakeUserRepository();
-            userRepository.AddRange(data);
-            var userApiController = this.CreateUserApiController(userRepository);
+            userRepository.Add(data);
+            var userApiController = new UserApiController(userRepository, null);
             SmartTableParam param = new SmartTableParam { 
                 Search = new Search
                 {
@@ -89,7 +85,7 @@ namespace SimplCommerce.Module.Core.Tests.Areas.Core.Controllers
                         CustomerGroupId = customerGroupId,
                         CreatedOn = new
                         {
-                            after = DateTimeOffset.Parse(createOn)
+                            after = DateTimeOffset.ParseExact(createOn, "dd/MM/yyyy", CultureInfo.InvariantCulture)
                         }
                     })
                 },
@@ -107,13 +103,14 @@ namespace SimplCommerce.Module.Core.Tests.Areas.Core.Controllers
             var response = userApiController.List(param);
             //I can't really know if it work, because can't find a way to get the value of the result object
             var result = response as JsonResult;
-            var smartResult = result.Value;                        
+            var smartResult = result.Value as SmartTableResult<UserSearchResponse>;                        
             // Assert
-            Assert.NotNull(smartResult);            
+            Assert.NotNull(smartResult);
+            Assert.NotEmpty(smartResult.Items);            
         }
 
         [Fact]
-        public async Task Get_StateUnderTest_ExpectedBehavior()
+        public async Task Get_receives_user_id_Expected_return_user_with_specified_id()
         {
             // Arrange
             var userRepository = new FakeUserRepository();
@@ -132,12 +129,22 @@ namespace SimplCommerce.Module.Core.Tests.Areas.Core.Controllers
             //Assert.Equal(200, result.StatusCode);
             Assert.Equal(user.Id,userResult.Id);            
         }
-
         [Fact]
-        public async Task Post_StateUnderTest_ExpectedBehavior()
+        public async Task Get_receives_null_object_Expected_return_not_found_result()
+        {
+            // Arrange
+            var userRepository = new FakeUserRepository();                        
+            var userApiController = new UserApiController(userRepository, null);
+            // Act
+            var response = await userApiController.Get(0);
+            var result = response as NotFoundResult;
+            // Assert            
+            Assert.Equal(404, result.StatusCode);
+        }        
+        [Fact]
+        public async Task Post_receives_user_form_object_Expected_created_at_action_result()
         {
             // Arrange            
-
             var userApiController = new UserApiController(new FakeUserRepository(), MockHelpers.MockUserManager(new List<User>()).Object);
             UserForm model = new UserForm { 
                 Id = 3,
@@ -157,19 +164,31 @@ namespace SimplCommerce.Module.Core.Tests.Areas.Core.Controllers
         }
 
         [Fact]
-        public async Task Put_StateUnderTest_ExpectedBehavior()
+        public async Task Put_receives_id_and_updated_state_Expected_accepted_result_if_update_is_successful()
         {
             // Arrange
             var userRepository = new FakeUserRepository();
             var expectedUser = new User
             {
-                FullName = "fake name"
+                FullName = "fake name",
+                Roles = new List<UserRole>
+                {
+                    new UserRole
+                    {
+                        RoleId = 1L                        
+                    },
+                    new UserRole
+                    {
+                        RoleId = 2L
+                    }
+                }
             };
             userRepository.Add(expectedUser);
             var userApiController = new UserApiController(userRepository, MockHelpers.MockUserManager(new List<User> { expectedUser }).Object);
             long id = 1;
             UserForm model = new UserForm { 
-                FullName = expectedUser.FullName + " updated"
+                FullName = expectedUser.FullName + " updated",
+                RoleIds = new long[] { 1L }
             };
 
             // Act
@@ -179,22 +198,50 @@ namespace SimplCommerce.Module.Core.Tests.Areas.Core.Controllers
             Assert.NotNull(result);
             Assert.Equal(202,result.StatusCode);            
         }
-
         [Fact]
-        public async Task Delete_StateUnderTest_ExpectedBehavior()
+        public async Task Put_receives_id_with_no_user_associated_Expected_not_found_result()
+        {
+            // Arrange
+            var userRepository = new FakeUserRepository();            
+            var userApiController = new UserApiController(userRepository, MockHelpers.MockUserManager(new List<User> { }).Object);                        
+
+            // Act
+            var response = await userApiController.Put(0, null);
+            var result = response as NotFoundResult;
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(404, result.StatusCode);
+        }
+        [Fact]
+        public async Task Delete_receives_user_id_Expected_no_content_result()
         {
             // Arrange
             var userRepository = new FakeUserRepository();
             var sampleUser = new User();
             userRepository.Add(sampleUser);
-            var userApiController = this.CreateUserApiController(userRepository);
+            var userApiController = new UserApiController(userRepository, null);
             long id = 1;
 
             // Act
-            var result = await userApiController.Delete(id);
-            var value = result as NoContentResult;            
+            var response = await userApiController.Delete(id);
+            var result = response as NoContentResult;            
             // Assert
-            Assert.NotNull(value);            
+            Assert.NotNull(result);
+            Assert.Equal(204, result.StatusCode);
+        }
+        [Fact]
+        public async Task Delete_receives_non_existing_user_id_Expected_not_found_result()
+        {
+            // Arrange
+            var userRepository = new FakeUserRepository();                        
+            var userApiController = new UserApiController(userRepository, null);            
+
+            // Act
+            var response = await userApiController.Delete(1);
+            var result = response as NotFoundResult;
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(404, result.StatusCode);
         }
     }
 }
