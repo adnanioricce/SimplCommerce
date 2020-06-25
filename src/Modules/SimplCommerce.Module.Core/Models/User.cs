@@ -62,6 +62,10 @@ namespace SimplCommerce.Module.Core.Models
         {
             foreach (var role in roles)
             {
+                if(role.User == null)
+                {
+                    role.User = this;
+                }
                 Roles.Add(role);
             }
         }    
