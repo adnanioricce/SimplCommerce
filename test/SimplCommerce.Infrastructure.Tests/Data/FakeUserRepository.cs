@@ -1,52 +1,53 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Moq;
 using SimplCommerce.Infrastructure.Data;
 using SimplCommerce.Infrastructure.Models;
+using SimplCommerce.Module.Core.Models;
 
-namespace SimplCommerce.Infrastructure.Tests
+namespace SimplCommerce.Infrastructure.Tests.Data
 {
-    public class FakeRepository<T> : IRepositoryWithTypedId<T, long> where T : IEntityWithTypedId<long>
+    public class FakeUserRepository : IRepository<User>
     {
-        private readonly Dictionary<long, T> _data = new Dictionary<long, T>();        
+        private readonly Dictionary<long, User> _data = new Dictionary<long, User>();
         private long _counter = 1;
-        public FakeRepository()
-        {            
+        public FakeUserRepository()
+        {
         }
-        public FakeRepository(IEnumerable<T> entities)
+        public FakeUserRepository(IEnumerable<User> entities)
         {
             AddRange(entities);
         }
-        public void Add(T entity)
+        public void Add(User entity)
         {
             _data.TryGetValue(entity.Id, out var _entity);
             if (!(_entity is null)) return;
             entity.SetId(_counter);
             _data.Add(entity.Id, entity);
             ++_counter;
-        }
-
-        public void AddRange(IEnumerable<T> entities)
+        }       
+        public void AddRange(IEnumerable<User> entities)
         {
-            foreach(var entity in entities)
+            foreach (var entity in entities)
             {
                 Add(entity);
             }
-        }
-
+        }        
         public IDbContextTransaction BeginTransaction()
         {
-            //At this level, is probably best to write a integration test
             throw new System.NotImplementedException();
         }
 
-        public IQueryable<T> Query()
-        {
-            return new TestAsyncEnumerable<T>(_data.Select(e => e.Value));
+        public IQueryable<User> Query()
+        {            
+            return FakeRepositoryHelpers.GetDbSet<User>(_data.Select(e => e.Value).AsQueryable()).Object;
         }
 
-        public void Remove(T entity)
+        public void Remove(User entity)
         {
             _data.Remove(entity.Id);
         }

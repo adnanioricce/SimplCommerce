@@ -4,32 +4,32 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage;
 using SimplCommerce.Infrastructure.Data;
 using SimplCommerce.Infrastructure.Models;
-using SimplCommerce.Module.Core.Models;
 
-namespace SimplCommerce.Infrastructure.Tests
+namespace SimplCommerce.Infrastructure.Tests.Data
 {
-    public class FakeUserRepository : IRepository<User>
+    public class FakeRepository<T> : IRepositoryWithTypedId<T, long> where T : IEntityWithTypedId<long>
     {
-        private readonly Dictionary<long, User> _data = new Dictionary<long, User>();
+        private readonly Dictionary<long, T> _data = new Dictionary<long, T>();        
         private long _counter = 1;
-        public FakeUserRepository()
-        {
+        public FakeRepository()
+        {            
         }
-        public FakeUserRepository(IEnumerable<User> entities)
+        public FakeRepository(IEnumerable<T> entities)
         {
             AddRange(entities);
         }
-        public void Add(User entity)
+        public void Add(T entity)
         {
             _data.TryGetValue(entity.Id, out var _entity);
             if (!(_entity is null)) return;
             entity.SetId(_counter);
             _data.Add(entity.Id, entity);
             ++_counter;
-        }       
-        public void AddRange(IEnumerable<User> entities)
+        }
+
+        public void AddRange(IEnumerable<T> entities)
         {
-            foreach (var entity in entities)
+            foreach(var entity in entities)
             {
                 Add(entity);
             }
@@ -37,15 +37,16 @@ namespace SimplCommerce.Infrastructure.Tests
 
         public IDbContextTransaction BeginTransaction()
         {
+            //At this level, is probably best to write a integration test
             throw new System.NotImplementedException();
         }
 
-        public IQueryable<User> Query()
+        public IQueryable<T> Query()
         {
-            return new TestAsyncEnumerable<User>(_data.Select(e => e.Value));
+            return _data.Select(e => e.Value).AsQueryable();
         }
 
-        public void Remove(User entity)
+        public void Remove(T entity)
         {
             _data.Remove(entity.Id);
         }
