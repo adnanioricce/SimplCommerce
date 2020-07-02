@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Microsoft.AspNetCore.Identity;
 using SimplCommerce.Infrastructure.Models;
 
@@ -12,7 +13,7 @@ namespace SimplCommerce.Module.Core.Models
         {
             CreatedOn = DateTimeOffset.Now;
             LatestUpdatedOn = DateTimeOffset.Now;
-        }
+        }        
 
         public const string SettingsDataKey = "Settings";
 
@@ -52,5 +53,38 @@ namespace SimplCommerce.Module.Core.Models
 
         /// <inheritdoc />
         public string ExtensionData { get; set; }
+
+        public void SetId(long id)
+        {
+            Id = id;
+        }
+        public void AddRoles(IEnumerable<UserRole> roles)
+        {
+            foreach (var role in roles)
+            {
+                if(role.User == null)
+                {
+                    role.User = this;
+                }
+                Roles.Add(role);
+            }
+        }    
+        public void RemoveRoles(IEnumerable<long> roleIds)
+        {
+            var roles = this.Roles.Where(userRole => !roleIds.Contains(userRole.RoleId)).ToList();
+            RemoveRoles(roles);
+        }
+        public void RemoveRoles(IEnumerable<UserRole> roles)
+        {
+            foreach (var deletedUserRole in roles)
+            {
+                deletedUserRole.User = null;
+                this.Roles.Remove(deletedUserRole);
+            }
+        }
+        public bool HasRole(long roleId)
+        {
+            return this.Roles.Any(u => u.RoleId == roleId);
+        }
     }
 }

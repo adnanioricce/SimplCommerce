@@ -7,5 +7,10 @@ namespace SimplCommerce.Module.Core.Models
     public class Role : IdentityRole<long>, IEntityWithTypedId<long>
     {
         public IList<UserRole> Users { get; set; } = new List<UserRole>();
+
+        public void SetId(long id)
+        {
+            Id = id;
+        }
     }
 }
