@@ -1,7 +1,7 @@
 using System.IO;
 namespace SimplCommerce.IntegrationTests
 {
-    public class CustomWebApplicationFactory : WebApplicationFactory<TStartup>
+    public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup>
     {
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -17,12 +17,12 @@ namespace SimplCommerce.IntegrationTests
                     .AddEntityFramework()
                     .BuildServiceProvider();
                 services.AddDbContext<SimplDbContext>(options => {
-                    options.UseSqlite("DataSource=test.db");
+                    options.UseSqlite("DataSource=:memory:");
                     options.UseInternalServiceProvider(provider);
                 });
-            });
-        }
-
+            });                        
+            // builder.
+        }        
         private string GetWebApplicationPath(string target,string current){
             string nextPath = Path.Combine(current, target);
             if(Directory.Exists(nextPath)){
