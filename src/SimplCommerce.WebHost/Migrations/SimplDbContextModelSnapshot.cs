@@ -2,8 +2,8 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SimplCommerce.Module.Core.Data;
 
 namespace SimplCommerce.WebHost.Migrations
@@ -15,21 +15,25 @@ namespace SimplCommerce.WebHost.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
+                .HasAnnotation("ProductVersion", "3.1.4")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("ClaimType");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("text");
 
-                    b.Property<string>("ClaimValue");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("text");
 
-                    b.Property<long>("RoleId");
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -42,13 +46,17 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("ClaimType");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("text");
 
-                    b.Property<string>("ClaimValue");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("text");
 
-                    b.Property<long>("UserId");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -59,13 +67,17 @@ namespace SimplCommerce.WebHost.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<long>", b =>
                 {
-                    b.Property<string>("LoginProvider");
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("text");
 
-                    b.Property<string>("ProviderKey");
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("text");
 
-                    b.Property<string>("ProviderDisplayName");
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("text");
 
-                    b.Property<long>("UserId");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -76,13 +88,17 @@ namespace SimplCommerce.WebHost.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<long>", b =>
                 {
-                    b.Property<long>("UserId");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
-                    b.Property<string>("LoginProvider");
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("text");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
 
-                    b.Property<string>("Value");
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
@@ -92,10 +108,11 @@ namespace SimplCommerce.WebHost.Migrations
             modelBuilder.Entity("SimplCommerce.Infrastructure.Localization.Culture", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -114,21 +131,27 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("CultureId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<long>("EntityId");
+                    b.Property<long>("EntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("EntityType")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("ProperyName")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<string>("Value");
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -141,16 +164,20 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("CultureId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Key")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<string>("Value");
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -163,19 +190,25 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long>("ActivityTypeId");
+                    b.Property<long>("ActivityTypeId")
+                        .HasColumnType("bigint");
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("EntityId");
+                    b.Property<long>("EntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("EntityTypeId")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long>("UserId");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -188,10 +221,12 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -210,20 +245,26 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsPublished");
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("Slug")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -235,37 +276,50 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
 
-                    b.Property<int>("DisplayOrder");
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
 
-                    b.Property<bool>("IncludeInMenu");
+                    b.Property<bool>("IncludeInMenu")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsPublished");
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("boolean");
 
-                    b.Property<string>("MetaDescription");
+                    b.Property<string>("MetaDescription")
+                        .HasColumnType("text");
 
                     b.Property<string>("MetaKeywords")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("MetaTitle")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long?>("ParentId");
+                    b.Property<long?>("ParentId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Slug")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long?>("ThumbnailImageId");
+                    b.Property<long?>("ThumbnailImageId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -280,91 +334,129 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long?>("BrandId");
+                    b.Property<long?>("BrandId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("CreatedById");
+                    b.Property<long>("CreatedById")
+                        .HasColumnType("bigint");
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
 
-                    b.Property<int>("DisplayOrder");
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Gtin")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<bool>("HasOptions");
+                    b.Property<bool>("HasOptions")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsAllowToOrder");
+                    b.Property<bool>("IsAllowToOrder")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsCallForPricing");
+                    b.Property<bool>("IsCallForPricing")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsFeatured");
+                    b.Property<bool>("IsFeatured")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsPublished");
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsVisibleIndividually");
+                    b.Property<bool>("IsVisibleIndividually")
+                        .HasColumnType("boolean");
 
-                    b.Property<long>("LatestUpdatedById");
+                    b.Property<long>("LatestUpdatedById")
+                        .HasColumnType("bigint");
 
-                    b.Property<DateTimeOffset>("LatestUpdatedOn");
+                    b.Property<DateTimeOffset>("LatestUpdatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("MetaDescription");
+                    b.Property<string>("MetaDescription")
+                        .HasColumnType("text");
 
                     b.Property<string>("MetaKeywords")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("MetaTitle")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("NormalizedName")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<decimal?>("OldPrice");
+                    b.Property<decimal?>("OldPrice")
+                        .HasColumnType("numeric");
 
-                    b.Property<decimal>("Price");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
 
-                    b.Property<DateTimeOffset?>("PublishedOn");
+                    b.Property<DateTimeOffset?>("PublishedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<double?>("RatingAverage");
+                    b.Property<double?>("RatingAverage")
+                        .HasColumnType("double precision");
 
-                    b.Property<int>("ReviewsCount");
+                    b.Property<int>("ReviewsCount")
+                        .HasColumnType("integer");
 
                     b.Property<string>("ShortDescription")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("Sku")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("Slug")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<decimal?>("SpecialPrice");
+                    b.Property<decimal?>("SpecialPrice")
+                        .HasColumnType("numeric");
 
-                    b.Property<DateTimeOffset?>("SpecialPriceEnd");
+                    b.Property<DateTimeOffset?>("SpecialPriceEnd")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTimeOffset?>("SpecialPriceStart");
+                    b.Property<DateTimeOffset?>("SpecialPriceStart")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Specification");
+                    b.Property<string>("Specification")
+                        .HasColumnType("text");
 
-                    b.Property<int>("StockQuantity");
+                    b.Property<int>("StockQuantity")
+                        .HasColumnType("integer");
 
-                    b.Property<bool>("StockTrackingIsEnabled");
+                    b.Property<bool>("StockTrackingIsEnabled")
+                        .HasColumnType("boolean");
 
-                    b.Property<long?>("TaxClassId");
+                    b.Property<long?>("TaxClassId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long?>("ThumbnailImageId");
+                    b.Property<long?>("ThumbnailImageId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long?>("VendorId");
+                    b.Property<long?>("VendorId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -385,12 +477,15 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long>("GroupId");
+                    b.Property<long>("GroupId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -404,10 +499,12 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -419,13 +516,17 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long>("AttributeId");
+                    b.Property<long>("AttributeId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("ProductId");
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
 
-                    b.Property<string>("Value");
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -440,15 +541,20 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long>("CategoryId");
+                    b.Property<long>("CategoryId")
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("DisplayOrder");
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
 
-                    b.Property<bool>("IsFeaturedProduct");
+                    b.Property<bool>("IsFeaturedProduct")
+                        .HasColumnType("boolean");
 
-                    b.Property<long>("ProductId");
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -463,13 +569,17 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("LinkType");
+                    b.Property<int>("LinkType")
+                        .HasColumnType("integer");
 
-                    b.Property<long>("LinkedProductId");
+                    b.Property<long>("LinkedProductId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("ProductId");
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -484,13 +594,17 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("DisplayOrder");
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
 
-                    b.Property<long>("MediaId");
+                    b.Property<long>("MediaId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("ProductId");
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -505,10 +619,12 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -532,15 +648,20 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long>("OptionId");
+                    b.Property<long>("OptionId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("ProductId");
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("SortIndex");
+                    b.Property<int>("SortIndex")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Value")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -556,18 +677,24 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("DisplayType")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long>("OptionId");
+                    b.Property<long>("OptionId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("ProductId");
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("SortIndex");
+                    b.Property<int>("SortIndex")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Value")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -583,23 +710,32 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long>("CreatedById");
+                    b.Property<long>("CreatedById")
+                        .HasColumnType("bigint");
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<decimal?>("OldPrice");
+                    b.Property<decimal?>("OldPrice")
+                        .HasColumnType("numeric");
 
-                    b.Property<decimal?>("Price");
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("numeric");
 
-                    b.Property<long?>("ProductId");
+                    b.Property<long?>("ProductId")
+                        .HasColumnType("bigint");
 
-                    b.Property<decimal?>("SpecialPrice");
+                    b.Property<decimal?>("SpecialPrice")
+                        .HasColumnType("numeric");
 
-                    b.Property<DateTimeOffset?>("SpecialPriceEnd");
+                    b.Property<DateTimeOffset?>("SpecialPriceEnd")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTimeOffset?>("SpecialPriceStart");
+                    b.Property<DateTimeOffset?>("SpecialPriceStart")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -614,10 +750,12 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -627,9 +765,11 @@ namespace SimplCommerce.WebHost.Migrations
 
             modelBuilder.Entity("SimplCommerce.Module.Catalog.Models.ProductTemplateProductAttribute", b =>
                 {
-                    b.Property<long>("ProductTemplateId");
+                    b.Property<long>("ProductTemplateId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("ProductAttributeId");
+                    b.Property<long>("ProductAttributeId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("ProductTemplateId", "ProductAttributeId");
 
@@ -642,14 +782,18 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<bool>("IsPublished");
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsSystem");
+                    b.Property<bool>("IsSystem")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -677,21 +821,28 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("CustomLink")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<int>("DisplayOrder");
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
 
-                    b.Property<long?>("EntityId");
+                    b.Property<long?>("EntityId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("MenuId");
+                    b.Property<long>("MenuId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long?>("ParentId");
+                    b.Property<long?>("ParentId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -708,38 +859,52 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Body");
+                    b.Property<string>("Body")
+                        .HasColumnType("text");
 
-                    b.Property<long>("CreatedById");
+                    b.Property<long>("CreatedById")
+                        .HasColumnType("bigint");
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsPublished");
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("boolean");
 
-                    b.Property<long>("LatestUpdatedById");
+                    b.Property<long>("LatestUpdatedById")
+                        .HasColumnType("bigint");
 
-                    b.Property<DateTimeOffset>("LatestUpdatedOn");
+                    b.Property<DateTimeOffset>("LatestUpdatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("MetaDescription");
+                    b.Property<string>("MetaDescription")
+                        .HasColumnType("text");
 
                     b.Property<string>("MetaKeywords")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("MetaTitle")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<DateTimeOffset?>("PublishedOn");
+                    b.Property<DateTimeOffset?>("PublishedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Slug")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -755,25 +920,34 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("CommentText");
+                    b.Property<string>("CommentText")
+                        .HasColumnType("text");
 
                     b.Property<string>("CommenterName")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("EntityId");
+                    b.Property<long>("EntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("EntityTypeId")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long?>("ParentId");
+                    b.Property<long?>("ParentId")
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("Status");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
-                    b.Property<long>("UserId");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -788,26 +962,35 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Address")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long>("ContactAreaId");
+                    b.Property<long>("ContactAreaId")
+                        .HasColumnType("bigint");
 
-                    b.Property<string>("Content");
+                    b.Property<string>("Content")
+                        .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("EmailAddress")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("FullName")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("PhoneNumber")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -821,12 +1004,15 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -838,32 +1024,42 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("AddressLine1")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("AddressLine2")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("City")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("ContactName")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("CountryId")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long?>("DistrictId");
+                    b.Property<long?>("DistrictId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Phone")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long>("StateOrProvinceId");
+                    b.Property<long>("StateOrProvinceId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("ZipCode")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -890,14 +1086,17 @@ namespace SimplCommerce.WebHost.Migrations
             modelBuilder.Entity("SimplCommerce.Module.Core.Models.AppSetting", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                        .HasColumnType("text");
 
-                    b.Property<bool>("IsVisibleInCommonSettingPage");
+                    b.Property<bool>("IsVisibleInCommonSettingPage")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Module")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("Value")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -957,6 +1156,13 @@ namespace SimplCommerce.WebHost.Migrations
                         new
                         {
                             Id = "Global.DefaultCultureUI",
+                            IsVisibleInCommonSettingPage = true,
+                            Module = "Core",
+                            Value = "en-US"
+                        },
+                        new
+                        {
+                            Id = "Global.DefaultCultureAdminUI",
                             IsVisibleInCommonSettingPage = true,
                             Module = "Core",
                             Value = "en-US"
@@ -1029,23 +1235,30 @@ namespace SimplCommerce.WebHost.Migrations
             modelBuilder.Entity("SimplCommerce.Module.Core.Models.Country", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                        .HasColumnType("text");
 
                     b.Property<string>("Code3")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<bool>("IsBillingEnabled");
+                    b.Property<bool>("IsBillingEnabled")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsCityEnabled");
+                    b.Property<bool>("IsCityEnabled")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsDistrictEnabled");
+                    b.Property<bool>("IsDistrictEnabled")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsShippingEnabled");
+                    b.Property<bool>("IsShippingEnabled")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsZipCodeEnabled");
+                    b.Property<bool>("IsZipCodeEnabled")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -1081,20 +1294,27 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
 
-                    b.Property<bool>("IsActive");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
-                    b.Property<DateTimeOffset>("LatestUpdatedOn");
+                    b.Property<DateTimeOffset>("LatestUpdatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -1107,9 +1327,11 @@ namespace SimplCommerce.WebHost.Migrations
 
             modelBuilder.Entity("SimplCommerce.Module.Core.Models.CustomerGroupUser", b =>
                 {
-                    b.Property<long>("UserId");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("CustomerGroupId");
+                    b.Property<long>("CustomerGroupId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("UserId", "CustomerGroupId");
 
@@ -1122,17 +1344,22 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Location");
+                    b.Property<string>("Location")
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long>("StateOrProvinceId");
+                    b.Property<long>("StateOrProvinceId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Type")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -1162,19 +1389,24 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long>("EntityId");
+                    b.Property<long>("EntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("EntityTypeId")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("Slug")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -1187,17 +1419,21 @@ namespace SimplCommerce.WebHost.Migrations
             modelBuilder.Entity("SimplCommerce.Module.Core.Models.EntityType", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                        .HasColumnType("text");
 
                     b.Property<string>("AreaName")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<bool>("IsMenuable");
+                    b.Property<bool>("IsMenuable")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("RoutingAction")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("RoutingController")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -1267,17 +1503,22 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Caption")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("FileName")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<int>("FileSize");
+                    b.Property<int>("FileSize")
+                        .HasColumnType("integer");
 
-                    b.Property<int>("MediaType");
+                    b.Property<int>("MediaType")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -1288,23 +1529,26 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
+                        .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
 
                     b.Property<string>("NormalizedName")
+                        .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                        .HasName("RoleNameIndex");
 
                     b.ToTable("Core_Role");
 
@@ -1343,19 +1587,24 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Code")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("CountryId")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("Type")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -1385,66 +1634,92 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("AccessFailedCount");
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("integer");
 
                     b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Culture")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long?>("DefaultBillingAddressId");
+                    b.Property<long?>("DefaultBillingAddressId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long?>("DefaultShippingAddressId");
+                    b.Property<long?>("DefaultShippingAddressId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Email")
+                        .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
 
-                    b.Property<bool>("EmailConfirmed");
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
 
-                    b.Property<string>("ExtensionData");
+                    b.Property<string>("ExtensionData")
+                        .HasColumnType("text");
 
                     b.Property<string>("FullName")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
-                    b.Property<DateTimeOffset>("LatestUpdatedOn");
+                    b.Property<DateTimeOffset>("LatestUpdatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("LockoutEnabled");
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("boolean");
 
-                    b.Property<DateTimeOffset?>("LockoutEnd");
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NormalizedEmail")
+                        .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
 
                     b.Property<string>("NormalizedUserName")
+                        .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
 
-                    b.Property<string>("PasswordHash");
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("text");
 
-                    b.Property<string>("PhoneNumber");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
 
-                    b.Property<bool>("PhoneNumberConfirmed");
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("RefreshTokenHash")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<string>("SecurityStamp");
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("text");
 
-                    b.Property<bool>("TwoFactorEnabled");
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("boolean");
 
-                    b.Property<Guid>("UserGuid");
+                    b.Property<Guid>("UserGuid")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("UserName")
+                        .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
 
-                    b.Property<long?>("VendorId");
+                    b.Property<long?>("VendorId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -1457,8 +1732,7 @@ namespace SimplCommerce.WebHost.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+                        .HasName("UserNameIndex");
 
                     b.HasIndex("VendorId");
 
@@ -1513,15 +1787,20 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long>("AddressId");
+                    b.Property<long>("AddressId")
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("AddressType");
+                    b.Property<int>("AddressType")
+                        .HasColumnType("integer");
 
-                    b.Property<DateTimeOffset?>("LastUsedOn");
+                    b.Property<DateTimeOffset?>("LastUsedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("UserId");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -1534,9 +1813,11 @@ namespace SimplCommerce.WebHost.Migrations
 
             modelBuilder.Entity("SimplCommerce.Module.Core.Models.UserRole", b =>
                 {
-                    b.Property<long>("UserId");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("RoleId");
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -1556,26 +1837,35 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
 
-                    b.Property<bool>("IsActive");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
-                    b.Property<DateTimeOffset>("LatestUpdatedOn");
+                    b.Property<DateTimeOffset>("LatestUpdatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("Slug")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -1586,23 +1876,29 @@ namespace SimplCommerce.WebHost.Migrations
             modelBuilder.Entity("SimplCommerce.Module.Core.Models.Widget", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                        .HasColumnType("text");
 
                     b.Property<string>("CreateUrl")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("EditUrl")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<bool>("IsPublished");
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("ViewComponentName")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -1686,29 +1982,40 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Data");
+                    b.Property<string>("Data")
+                        .HasColumnType("text");
 
-                    b.Property<int>("DisplayOrder");
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("HtmlData");
+                    b.Property<string>("HtmlData")
+                        .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("LatestUpdatedOn");
+                    b.Property<DateTimeOffset>("LatestUpdatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<DateTimeOffset?>("PublishEnd");
+                    b.Property<DateTimeOffset?>("PublishEnd")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTimeOffset?>("PublishStart");
+                    b.Property<DateTimeOffset?>("PublishStart")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("WidgetId")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long>("WidgetZoneId");
+                    b.Property<long>("WidgetZoneId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -1723,12 +2030,15 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -1757,15 +2067,20 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long>("ProductId");
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("Quantity");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
 
-                    b.Property<int>("ReservedQuantity");
+                    b.Property<int>("ReservedQuantity")
+                        .HasColumnType("integer");
 
-                    b.Property<long>("WarehouseId");
+                    b.Property<long>("WarehouseId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -1780,20 +2095,27 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long>("AdjustedQuantity");
+                    b.Property<long>("AdjustedQuantity")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("CreatedById");
+                    b.Property<long>("CreatedById")
+                        .HasColumnType("bigint");
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Note")
+                        .HasColumnType("character varying(1000)")
                         .HasMaxLength(1000);
 
-                    b.Property<long>("ProductId");
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("WarehouseId");
+                    b.Property<long>("WarehouseId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -1810,15 +2132,19 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long>("AddressId");
+                    b.Property<long>("AddressId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long?>("VendorId");
+                    b.Property<long?>("VendorId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -1841,30 +2167,40 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
 
-                    b.Property<int>("DisplayOrder");
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsPublished");
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("boolean");
 
-                    b.Property<string>("MetaDescription");
+                    b.Property<string>("MetaDescription")
+                        .HasColumnType("text");
 
                     b.Property<string>("MetaKeywords")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("MetaTitle")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("Slug")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -1876,44 +2212,60 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long>("CreatedById");
+                    b.Property<long>("CreatedById")
+                        .HasColumnType("bigint");
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("FullContent");
+                    b.Property<string>("FullContent")
+                        .HasColumnType("text");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsPublished");
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("boolean");
 
-                    b.Property<long>("LatestUpdatedById");
+                    b.Property<long>("LatestUpdatedById")
+                        .HasColumnType("bigint");
 
-                    b.Property<DateTimeOffset>("LatestUpdatedOn");
+                    b.Property<DateTimeOffset>("LatestUpdatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("MetaDescription");
+                    b.Property<string>("MetaDescription")
+                        .HasColumnType("text");
 
                     b.Property<string>("MetaKeywords")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("MetaTitle")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<DateTimeOffset?>("PublishedOn");
+                    b.Property<DateTimeOffset?>("PublishedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ShortContent")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("Slug")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long?>("ThumbnailImageId");
+                    b.Property<long?>("ThumbnailImageId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -1928,9 +2280,11 @@ namespace SimplCommerce.WebHost.Migrations
 
             modelBuilder.Entity("SimplCommerce.Module.News.Models.NewsItemCategory", b =>
                 {
-                    b.Property<long>("CategoryId");
+                    b.Property<long>("CategoryId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("NewsItemId");
+                    b.Property<long>("NewsItemId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("CategoryId", "NewsItemId");
 
@@ -1943,58 +2297,82 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long>("BillingAddressId");
+                    b.Property<long>("BillingAddressId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("CouponCode")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("CouponRuleName")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long>("CreatedById");
+                    b.Property<long>("CreatedById")
+                        .HasColumnType("bigint");
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("CustomerId");
+                    b.Property<long>("CustomerId")
+                        .HasColumnType("bigint");
 
-                    b.Property<decimal>("DiscountAmount");
+                    b.Property<decimal>("DiscountAmount")
+                        .HasColumnType("numeric");
 
-                    b.Property<bool>("IsMasterOrder");
+                    b.Property<bool>("IsMasterOrder")
+                        .HasColumnType("boolean");
 
-                    b.Property<long>("LatestUpdatedById");
+                    b.Property<long>("LatestUpdatedById")
+                        .HasColumnType("bigint");
 
-                    b.Property<DateTimeOffset>("LatestUpdatedOn");
+                    b.Property<DateTimeOffset>("LatestUpdatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("OrderNote")
+                        .HasColumnType("character varying(1000)")
                         .HasMaxLength(1000);
 
-                    b.Property<int>("OrderStatus");
+                    b.Property<int>("OrderStatus")
+                        .HasColumnType("integer");
 
-                    b.Property<decimal>("OrderTotal");
+                    b.Property<decimal>("OrderTotal")
+                        .HasColumnType("numeric");
 
-                    b.Property<long?>("ParentId");
+                    b.Property<long?>("ParentId")
+                        .HasColumnType("bigint");
 
-                    b.Property<decimal>("PaymentFeeAmount");
+                    b.Property<decimal>("PaymentFeeAmount")
+                        .HasColumnType("numeric");
 
                     b.Property<string>("PaymentMethod")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long>("ShippingAddressId");
+                    b.Property<long>("ShippingAddressId")
+                        .HasColumnType("bigint");
 
-                    b.Property<decimal>("ShippingFeeAmount");
+                    b.Property<decimal>("ShippingFeeAmount")
+                        .HasColumnType("numeric");
 
                     b.Property<string>("ShippingMethod")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<decimal>("SubTotal");
+                    b.Property<decimal>("SubTotal")
+                        .HasColumnType("numeric");
 
-                    b.Property<decimal>("SubTotalWithDiscount");
+                    b.Property<decimal>("SubTotalWithDiscount")
+                        .HasColumnType("numeric");
 
-                    b.Property<decimal>("TaxAmount");
+                    b.Property<decimal>("TaxAmount")
+                        .HasColumnType("numeric");
 
-                    b.Property<long?>("VendorId");
+                    b.Property<long?>("VendorId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -2017,31 +2395,41 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("AddressLine1")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("AddressLine2")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("City")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("ContactName")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("CountryId")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long?>("DistrictId");
+                    b.Property<long?>("DistrictId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Phone")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long>("StateOrProvinceId");
+                    b.Property<long>("StateOrProvinceId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("ZipCode")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -2059,22 +2447,30 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long>("CreatedById");
+                    b.Property<long>("CreatedById")
+                        .HasColumnType("bigint");
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("NewStatus");
+                    b.Property<int>("NewStatus")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Note")
+                        .HasColumnType("character varying(1000)")
                         .HasMaxLength(1000);
 
-                    b.Property<int?>("OldStatus");
+                    b.Property<int?>("OldStatus")
+                        .HasColumnType("integer");
 
-                    b.Property<long>("OrderId");
+                    b.Property<long>("OrderId")
+                        .HasColumnType("bigint");
 
-                    b.Property<string>("OrderSnapshot");
+                    b.Property<string>("OrderSnapshot")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -2089,21 +2485,29 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<decimal>("DiscountAmount");
+                    b.Property<decimal>("DiscountAmount")
+                        .HasColumnType("numeric");
 
-                    b.Property<long?>("OrderId");
+                    b.Property<long?>("OrderId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("ProductId");
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
 
-                    b.Property<decimal>("ProductPrice");
+                    b.Property<decimal>("ProductPrice")
+                        .HasColumnType("numeric");
 
-                    b.Property<int>("Quantity");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
 
-                    b.Property<decimal>("TaxAmount");
+                    b.Property<decimal>("TaxAmount")
+                        .HasColumnType("numeric");
 
-                    b.Property<decimal>("TaxPercent");
+                    b.Property<decimal>("TaxPercent")
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
@@ -2118,27 +2522,37 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<decimal>("Amount");
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("FailureMessage");
+                    b.Property<string>("FailureMessage")
+                        .HasColumnType("text");
 
                     b.Property<string>("GatewayTransactionId")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<DateTimeOffset>("LatestUpdatedOn");
+                    b.Property<DateTimeOffset>("LatestUpdatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("OrderId");
+                    b.Property<long>("OrderId")
+                        .HasColumnType("bigint");
 
-                    b.Property<decimal>("PaymentFee");
+                    b.Property<decimal>("PaymentFee")
+                        .HasColumnType("numeric");
 
                     b.Property<string>("PaymentMethod")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<int>("Status");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -2150,20 +2564,25 @@ namespace SimplCommerce.WebHost.Migrations
             modelBuilder.Entity("SimplCommerce.Module.Payments.Models.PaymentProvider", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                        .HasColumnType("text");
 
-                    b.Property<string>("AdditionalSettings");
+                    b.Property<string>("AdditionalSettings")
+                        .HasColumnType("text");
 
                     b.Property<string>("ConfigureUrl")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<bool>("IsEnabled");
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("LandingViewComponentName")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -2239,34 +2658,47 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
 
-                    b.Property<decimal>("DiscountAmount");
+                    b.Property<decimal>("DiscountAmount")
+                        .HasColumnType("numeric");
 
-                    b.Property<int?>("DiscountStep");
+                    b.Property<int?>("DiscountStep")
+                        .HasColumnType("integer");
 
-                    b.Property<DateTimeOffset?>("EndOn");
+                    b.Property<DateTimeOffset?>("EndOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("IsActive");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsCouponRequired");
+                    b.Property<bool>("IsCouponRequired")
+                        .HasColumnType("boolean");
 
-                    b.Property<decimal?>("MaxDiscountAmount");
+                    b.Property<decimal?>("MaxDiscountAmount")
+                        .HasColumnType("numeric");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("RuleToApply")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<DateTimeOffset?>("StartOn");
+                    b.Property<DateTimeOffset?>("StartOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("UsageLimitPerCoupon");
+                    b.Property<int?>("UsageLimitPerCoupon")
+                        .HasColumnType("integer");
 
-                    b.Property<int?>("UsageLimitPerCustomer");
+                    b.Property<int?>("UsageLimitPerCustomer")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -2275,9 +2707,11 @@ namespace SimplCommerce.WebHost.Migrations
 
             modelBuilder.Entity("SimplCommerce.Module.Pricing.Models.CartRuleCategory", b =>
                 {
-                    b.Property<long>("CartRuleId");
+                    b.Property<long>("CartRuleId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("CategoryId");
+                    b.Property<long>("CategoryId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("CartRuleId", "CategoryId");
 
@@ -2288,9 +2722,11 @@ namespace SimplCommerce.WebHost.Migrations
 
             modelBuilder.Entity("SimplCommerce.Module.Pricing.Models.CartRuleCustomerGroup", b =>
                 {
-                    b.Property<long>("CartRuleId");
+                    b.Property<long>("CartRuleId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("CustomerGroupId");
+                    b.Property<long>("CustomerGroupId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("CartRuleId", "CustomerGroupId");
 
@@ -2301,9 +2737,11 @@ namespace SimplCommerce.WebHost.Migrations
 
             modelBuilder.Entity("SimplCommerce.Module.Pricing.Models.CartRuleProduct", b =>
                 {
-                    b.Property<long>("CartRuleId");
+                    b.Property<long>("CartRuleId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("ProductId");
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("CartRuleId", "ProductId");
 
@@ -2316,17 +2754,23 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long>("CartRuleId");
+                    b.Property<long>("CartRuleId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long?>("CouponId");
+                    b.Property<long?>("CouponId")
+                        .HasColumnType("bigint");
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("OrderId");
+                    b.Property<long>("OrderId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("UserId");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -2343,26 +2787,35 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
 
-                    b.Property<decimal>("DiscountAmount");
+                    b.Property<decimal>("DiscountAmount")
+                        .HasColumnType("numeric");
 
-                    b.Property<DateTimeOffset?>("EndOn");
+                    b.Property<DateTimeOffset?>("EndOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("IsActive");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
-                    b.Property<decimal?>("MaxDiscountAmount");
+                    b.Property<decimal?>("MaxDiscountAmount")
+                        .HasColumnType("numeric");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("RuleToApply")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<DateTimeOffset?>("StartOn");
+                    b.Property<DateTimeOffset?>("StartOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -2371,9 +2824,11 @@ namespace SimplCommerce.WebHost.Migrations
 
             modelBuilder.Entity("SimplCommerce.Module.Pricing.Models.CatalogRuleCustomerGroup", b =>
                 {
-                    b.Property<long>("CatalogRuleId");
+                    b.Property<long>("CatalogRuleId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("CustomerGroupId");
+                    b.Property<long>("CustomerGroupId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("CatalogRuleId", "CustomerGroupId");
 
@@ -2386,15 +2841,19 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long>("CartRuleId");
+                    b.Property<long>("CartRuleId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Code")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -2407,13 +2866,17 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("ProductId");
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("UserId");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -2428,13 +2891,17 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTimeOffset>("LatestViewedOn");
+                    b.Property<DateTimeOffset>("LatestViewedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("ProductId");
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("UserId");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -2445,20 +2912,27 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Comment");
+                    b.Property<string>("Comment")
+                        .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ReplierName")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long>("ReviewId");
+                    b.Property<long>("ReviewId")
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("Status");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
-                    b.Property<long>("UserId");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -2473,28 +2947,38 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Comment");
+                    b.Property<string>("Comment")
+                        .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("EntityId");
+                    b.Property<long>("EntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("EntityTypeId")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<int>("Rating");
+                    b.Property<int>("Rating")
+                        .HasColumnType("integer");
 
                     b.Property<string>("ReviewerName")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<int>("Status");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Title")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long>("UserId");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -2507,15 +2991,19 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("QueryText")
                         .IsRequired()
+                        .HasColumnType("character varying(500)")
                         .HasMaxLength(500);
 
-                    b.Property<int>("ResultsCount");
+                    b.Property<int>("ResultsCount")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -2526,22 +3014,30 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long>("CreatedById");
+                    b.Property<long>("CreatedById")
+                        .HasColumnType("bigint");
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTimeOffset>("LatestUpdatedOn");
+                    b.Property<DateTimeOffset>("LatestUpdatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("OrderId");
+                    b.Property<long>("OrderId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("TrackingNumber")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long?>("VendorId");
+                    b.Property<long?>("VendorId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("WarehouseId");
+                    b.Property<long>("WarehouseId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -2558,15 +3054,20 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long>("OrderItemId");
+                    b.Property<long>("OrderItemId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("ProductId");
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("Quantity");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
 
-                    b.Property<long>("ShipmentId");
+                    b.Property<long>("ShipmentId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -2580,31 +3081,40 @@ namespace SimplCommerce.WebHost.Migrations
             modelBuilder.Entity("SimplCommerce.Module.Shipping.Models.ShippingProvider", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                        .HasColumnType("text");
 
-                    b.Property<string>("AdditionalSettings");
+                    b.Property<string>("AdditionalSettings")
+                        .HasColumnType("text");
 
                     b.Property<string>("ConfigureUrl")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<bool>("IsEnabled");
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("OnlyCountryIdsString")
+                        .HasColumnType("character varying(1000)")
                         .HasMaxLength(1000);
 
                     b.Property<string>("OnlyStateOrProvinceIdsString")
+                        .HasColumnType("character varying(1000)")
                         .HasMaxLength(1000);
 
                     b.Property<string>("ShippingPriceServiceTypeName")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<bool>("ToAllShippingEnabledCountries");
+                    b.Property<bool>("ToAllShippingEnabledCountries")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("ToAllShippingEnabledStatesOrProvinces");
+                    b.Property<bool>("ToAllShippingEnabledStatesOrProvinces")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
@@ -2638,22 +3148,30 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("CountryId")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long?>("DistrictId");
+                    b.Property<long?>("DistrictId")
+                        .HasColumnType("bigint");
 
-                    b.Property<decimal>("MinOrderSubtotal");
+                    b.Property<decimal>("MinOrderSubtotal")
+                        .HasColumnType("numeric");
 
-                    b.Property<string>("Note");
+                    b.Property<string>("Note")
+                        .HasColumnType("text");
 
-                    b.Property<decimal>("ShippingPrice");
+                    b.Property<decimal>("ShippingPrice")
+                        .HasColumnType("numeric");
 
-                    b.Property<long?>("StateOrProvinceId");
+                    b.Property<long?>("StateOrProvinceId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("ZipCode")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -2671,39 +3189,54 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("CouponCode")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.Property<string>("CouponRuleName")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long>("CreatedById");
+                    b.Property<long>("CreatedById")
+                        .HasColumnType("bigint");
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("CustomerId");
+                    b.Property<long>("CustomerId")
+                        .HasColumnType("bigint");
 
-                    b.Property<bool>("IsActive");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
-                    b.Property<bool>("IsProductPriceIncludeTax");
+                    b.Property<bool>("IsProductPriceIncludeTax")
+                        .HasColumnType("boolean");
 
-                    b.Property<DateTimeOffset>("LatestUpdatedOn");
+                    b.Property<DateTimeOffset>("LatestUpdatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("LockedOnCheckout");
+                    b.Property<bool>("LockedOnCheckout")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("OrderNote")
+                        .HasColumnType("character varying(1000)")
                         .HasMaxLength(1000);
 
-                    b.Property<decimal?>("ShippingAmount");
+                    b.Property<decimal?>("ShippingAmount")
+                        .HasColumnType("numeric");
 
-                    b.Property<string>("ShippingData");
+                    b.Property<string>("ShippingData")
+                        .HasColumnType("text");
 
                     b.Property<string>("ShippingMethod")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<decimal?>("TaxAmount");
+                    b.Property<decimal?>("TaxAmount")
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
@@ -2718,15 +3251,20 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long>("CartId");
+                    b.Property<long>("CartId")
+                        .HasColumnType("bigint");
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("ProductId");
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("Quantity");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -2741,10 +3279,12 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -2763,18 +3303,24 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("CountryId")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<decimal>("Rate");
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("numeric");
 
-                    b.Property<long?>("StateOrProvinceId");
+                    b.Property<long?>("StateOrProvinceId")
+                        .HasColumnType("bigint");
 
-                    b.Property<long>("TaxClassId");
+                    b.Property<long>("TaxClassId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("ZipCode")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
                     b.HasKey("Id");
@@ -2792,16 +3338,21 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTimeOffset>("LatestUpdatedOn");
+                    b.Property<DateTimeOffset>("LatestUpdatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("SharingCode")
+                        .HasColumnType("character varying(450)")
                         .HasMaxLength(450);
 
-                    b.Property<long>("UserId");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -2814,19 +3365,26 @@ namespace SimplCommerce.WebHost.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTimeOffset>("CreatedOn");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("LatestUpdatedOn");
+                    b.Property<DateTimeOffset>("LatestUpdatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("ProductId");
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("Quantity");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
 
-                    b.Property<long>("WishListId");
+                    b.Property<long>("WishListId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -2839,34 +3397,38 @@ namespace SimplCommerce.WebHost.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
                 {
-                    b.HasOne("SimplCommerce.Module.Core.Models.Role")
+                    b.HasOne("SimplCommerce.Module.Core.Models.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<long>", b =>
                 {
-                    b.HasOne("SimplCommerce.Module.Core.Models.User")
+                    b.HasOne("SimplCommerce.Module.Core.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<long>", b =>
                 {
-                    b.HasOne("SimplCommerce.Module.Core.Models.User")
+                    b.HasOne("SimplCommerce.Module.Core.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<long>", b =>
                 {
-                    b.HasOne("SimplCommerce.Module.Core.Models.User")
+                    b.HasOne("SimplCommerce.Module.Core.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Infrastructure.Localization.LocalizedContentProperty", b =>
@@ -2874,7 +3436,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Infrastructure.Localization.Culture", "Culture")
                         .WithMany()
                         .HasForeignKey("CultureId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Infrastructure.Localization.Resource", b =>
@@ -2882,7 +3445,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Infrastructure.Localization.Culture", "Culture")
                         .WithMany("Resources")
                         .HasForeignKey("CultureId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.ActivityLog.Models.Activity", b =>
@@ -2890,7 +3454,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.ActivityLog.Models.ActivityType", "ActivityType")
                         .WithMany()
                         .HasForeignKey("ActivityTypeId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Catalog.Models.Category", b =>
@@ -2916,12 +3481,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "LatestUpdatedBy")
                         .WithMany()
                         .HasForeignKey("LatestUpdatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Tax.Models.TaxClass", "TaxClass")
                         .WithMany()
@@ -2939,7 +3506,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Catalog.Models.ProductAttributeGroup", "Group")
                         .WithMany("Attributes")
                         .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Catalog.Models.ProductAttributeValue", b =>
@@ -2947,12 +3515,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Catalog.Models.ProductAttribute", "Attribute")
                         .WithMany()
                         .HasForeignKey("AttributeId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Catalog.Models.Product", "Product")
                         .WithMany("AttributeValues")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Catalog.Models.ProductCategory", b =>
@@ -2960,12 +3530,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Catalog.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Catalog.Models.Product", "Product")
                         .WithMany("Categories")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Catalog.Models.ProductLink", b =>
@@ -2973,12 +3545,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Catalog.Models.Product", "LinkedProduct")
                         .WithMany("LinkedProductLinks")
                         .HasForeignKey("LinkedProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Catalog.Models.Product", "Product")
                         .WithMany("ProductLinks")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Catalog.Models.ProductMedia", b =>
@@ -2986,12 +3560,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.Media", "Media")
                         .WithMany()
                         .HasForeignKey("MediaId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Catalog.Models.Product", "Product")
                         .WithMany("Medias")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Catalog.Models.ProductOptionCombination", b =>
@@ -2999,12 +3575,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Catalog.Models.ProductOption", "Option")
                         .WithMany()
                         .HasForeignKey("OptionId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Catalog.Models.Product", "Product")
                         .WithMany("OptionCombinations")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Catalog.Models.ProductOptionValue", b =>
@@ -3012,12 +3590,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Catalog.Models.ProductOption", "Option")
                         .WithMany()
                         .HasForeignKey("OptionId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Catalog.Models.Product", "Product")
                         .WithMany("OptionValues")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Catalog.Models.ProductPriceHistory", b =>
@@ -3025,7 +3605,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Catalog.Models.Product", "Product")
                         .WithMany("PriceHistories")
@@ -3038,12 +3619,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Catalog.Models.ProductAttribute", "ProductAttribute")
                         .WithMany("ProductTemplates")
                         .HasForeignKey("ProductAttributeId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Catalog.Models.ProductTemplate", "ProductTemplate")
                         .WithMany("ProductAttributes")
                         .HasForeignKey("ProductTemplateId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Cms.Models.MenuItem", b =>
@@ -3056,7 +3639,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Cms.Models.Menu", "Menu")
                         .WithMany("MenuItems")
                         .HasForeignKey("MenuId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Cms.Models.MenuItem", "Parent")
                         .WithMany("Children")
@@ -3069,12 +3653,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "LatestUpdatedBy")
                         .WithMany()
                         .HasForeignKey("LatestUpdatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Comments.Models.Comment", b =>
@@ -3087,7 +3673,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Contacts.Models.Contact", b =>
@@ -3095,7 +3682,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Contacts.Models.ContactArea", "ContactArea")
                         .WithMany()
                         .HasForeignKey("ContactAreaId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Core.Models.Address", b =>
@@ -3103,7 +3691,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Core.Models.District", "District")
                         .WithMany()
@@ -3113,7 +3702,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.StateOrProvince", "StateOrProvince")
                         .WithMany()
                         .HasForeignKey("StateOrProvinceId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Core.Models.CustomerGroupUser", b =>
@@ -3121,12 +3711,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.CustomerGroup", "CustomerGroup")
                         .WithMany("Users")
                         .HasForeignKey("CustomerGroupId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "User")
                         .WithMany("CustomerGroups")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Core.Models.District", b =>
@@ -3134,7 +3726,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.StateOrProvince", "StateOrProvince")
                         .WithMany()
                         .HasForeignKey("StateOrProvinceId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Core.Models.Entity", b =>
@@ -3165,7 +3758,7 @@ namespace SimplCommerce.WebHost.Migrations
                         .HasForeignKey("DefaultShippingAddressId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SimplCommerce.Module.Core.Models.Vendor")
+                    b.HasOne("SimplCommerce.Module.Core.Models.Vendor", null)
                         .WithMany("Users")
                         .HasForeignKey("VendorId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -3176,12 +3769,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.Address", "Address")
                         .WithMany("UserAddresses")
                         .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "User")
                         .WithMany("UserAddresses")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Core.Models.UserRole", b =>
@@ -3189,12 +3784,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "User")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Core.Models.WidgetInstance", b =>
@@ -3207,7 +3804,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.WidgetZone", "WidgetZone")
                         .WithMany()
                         .HasForeignKey("WidgetZoneId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Inventory.Models.Stock", b =>
@@ -3215,12 +3813,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Catalog.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Inventory.Models.Warehouse", "Warehouse")
                         .WithMany()
                         .HasForeignKey("WarehouseId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Inventory.Models.StockHistory", b =>
@@ -3228,17 +3828,20 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Catalog.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Inventory.Models.Warehouse", "Warehouse")
                         .WithMany()
                         .HasForeignKey("WarehouseId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Inventory.Models.Warehouse", b =>
@@ -3246,7 +3849,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Core.Models.Vendor", "Vendor")
                         .WithMany()
@@ -3259,12 +3863,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "LatestUpdatedBy")
                         .WithMany()
                         .HasForeignKey("LatestUpdatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Core.Models.Media", "ThumbnailImage")
                         .WithMany()
@@ -3277,12 +3883,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.News.Models.NewsCategory", "Category")
                         .WithMany("NewsItems")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.News.Models.NewsItem", "NewsItem")
                         .WithMany("Categories")
                         .HasForeignKey("NewsItemId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Orders.Models.Order", b =>
@@ -3290,22 +3898,26 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Orders.Models.OrderAddress", "BillingAddress")
                         .WithMany()
                         .HasForeignKey("BillingAddressId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "LatestUpdatedBy")
                         .WithMany()
                         .HasForeignKey("LatestUpdatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Orders.Models.Order", "Parent")
                         .WithMany("Children")
@@ -3315,7 +3927,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Orders.Models.OrderAddress", "ShippingAddress")
                         .WithMany()
                         .HasForeignKey("ShippingAddressId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Orders.Models.OrderAddress", b =>
@@ -3333,7 +3946,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.StateOrProvince", "StateOrProvince")
                         .WithMany()
                         .HasForeignKey("StateOrProvinceId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Orders.Models.OrderHistory", b =>
@@ -3341,12 +3955,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Orders.Models.Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Orders.Models.OrderItem", b =>
@@ -3359,7 +3975,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Catalog.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Payments.Models.Payment", b =>
@@ -3367,7 +3984,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Orders.Models.Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Pricing.Models.CartRuleCategory", b =>
@@ -3375,12 +3993,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Pricing.Models.CartRule", "CartRule")
                         .WithMany("Categories")
                         .HasForeignKey("CartRuleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Catalog.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Pricing.Models.CartRuleCustomerGroup", b =>
@@ -3388,12 +4008,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Pricing.Models.CartRule", "CartRule")
                         .WithMany("CustomerGroups")
                         .HasForeignKey("CartRuleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Core.Models.CustomerGroup", "CustomerGroup")
                         .WithMany()
                         .HasForeignKey("CustomerGroupId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Pricing.Models.CartRuleProduct", b =>
@@ -3401,12 +4023,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Pricing.Models.CartRule", "CartRule")
                         .WithMany("Products")
                         .HasForeignKey("CartRuleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Catalog.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Pricing.Models.CartRuleUsage", b =>
@@ -3414,7 +4038,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Pricing.Models.CartRule", "CartRule")
                         .WithMany()
                         .HasForeignKey("CartRuleId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Pricing.Models.Coupon", "Coupon")
                         .WithMany()
@@ -3424,7 +4049,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Pricing.Models.CatalogRuleCustomerGroup", b =>
@@ -3432,12 +4058,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Pricing.Models.CatalogRule", "CatalogRule")
                         .WithMany("CustomerGroups")
                         .HasForeignKey("CatalogRuleId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Core.Models.CustomerGroup", "CustomerGroup")
                         .WithMany()
                         .HasForeignKey("CustomerGroupId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Pricing.Models.Coupon", b =>
@@ -3445,7 +4073,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Pricing.Models.CartRule", "CartRule")
                         .WithMany("Coupons")
                         .HasForeignKey("CartRuleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.ProductComparison.Models.ComparingProduct", b =>
@@ -3453,12 +4082,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Catalog.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Reviews.Models.Reply", b =>
@@ -3466,12 +4097,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Reviews.Models.Review", "Review")
                         .WithMany("Replies")
                         .HasForeignKey("ReviewId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Reviews.Models.Review", b =>
@@ -3479,7 +4112,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Shipments.Models.Shipment", b =>
@@ -3487,17 +4121,20 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Orders.Models.Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Inventory.Models.Warehouse", "Warehouse")
                         .WithMany()
                         .HasForeignKey("WarehouseId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Shipments.Models.ShipmentItem", b =>
@@ -3505,12 +4142,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Catalog.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Shipments.Models.Shipment", "Shipment")
                         .WithMany("Items")
                         .HasForeignKey("ShipmentId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.ShippingTableRate.Models.PriceAndDestination", b =>
@@ -3536,12 +4175,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.ShoppingCart.Models.CartItem", b =>
@@ -3549,12 +4190,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.ShoppingCart.Models.Cart", "Cart")
                         .WithMany("Items")
                         .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.Catalog.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.Tax.Models.TaxRate", b =>
@@ -3572,7 +4215,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Tax.Models.TaxClass", "TaxClass")
                         .WithMany()
                         .HasForeignKey("TaxClassId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.WishList.Models.WishList", b =>
@@ -3580,7 +4224,8 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SimplCommerce.Module.WishList.Models.WishListItem", b =>
@@ -3588,12 +4233,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Catalog.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SimplCommerce.Module.WishList.Models.WishList", "WishList")
                         .WithMany("Items")
                         .HasForeignKey("WishListId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

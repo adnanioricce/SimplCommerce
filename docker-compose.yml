@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  simpldb:
+    image: postgres
+    environment:
+        - "POSTGRES_PASSWORD=postgres"
+        - "POSTGRES_USER=postgres"
+        - "POSTGRES_DB=simplcommerce"
+  simplcommerce.webhost:
+    image: ${DOCKER_REGISTRY-}simplcommercewebhost    
+    build:
+      context: .
+      dockerfile: Dockerfile
