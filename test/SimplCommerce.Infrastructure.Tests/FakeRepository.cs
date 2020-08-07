@@ -1,6 +1,7 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Storage;
 using SimplCommerce.Infrastructure.Data;
 using SimplCommerce.Infrastructure.Models;
 
@@ -14,7 +15,7 @@ namespace SimplCommerce.Infrastructure.Tests
         {
             _data.TryGetValue(entity.Id,out var value);
             if(!(value is null)) return;
-            entity.Id = _counter;
+            entity.SetId(_counter);
             _data.Add(entity.Id,entity);
             ++_counter;
         }

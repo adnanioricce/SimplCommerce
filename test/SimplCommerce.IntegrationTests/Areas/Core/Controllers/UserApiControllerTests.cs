@@ -5,9 +5,12 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+//using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using SimplCommerce.Infrastructure.Data;
+using SimplCommerce.Infrastructure.Extensions;
 using SimplCommerce.Infrastructure.Web.SmartTable;
 using SimplCommerce.Module.Core.Data;
 using SimplCommerce.Module.Core.Models;
@@ -17,19 +20,30 @@ using Xunit;
 namespace SimplCommerce.IntegrationTests.Areas.Core.Controllers
 {
     //TODO: need teardown and setup
-    public class UserApiControllerTests : IClassFixture<WebApplicationFactory<Startup>>,IDisposable
+    public class UserApiControllerTests : IClassFixture<CustomWebApplicationFactory<Startup>>,IDisposable
     {
         private readonly WebApplicationFactory<Startup> _factory;
-        public UserApiControllerTests(WebApplicationFactory<Startup> factory)
+        private readonly DbContext _dbContext;
+        private readonly string _dbName = "SimplCommerce";
+        private readonly string currentTimeInHours = $"{DateTime.UtcNow.Hour}";
+        private readonly string databaseSnapshotName = "";
+        public UserApiControllerTests(CustomWebApplicationFactory<Startup> factory)
         {
             _factory = factory;
+            using var scope = _factory.Services.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<SimplDbContext>();
+            databaseSnapshotName = $"{_dbName}_snapshot_{currentTimeInHours}";
+            string snapshotScript = $@"CREATE DATABASE {_dbName}_snapshot_{currentTimeInHours} ON  
+                                    ( NAME = {_dbName}, FILENAME =   
+                                    '.\{_dbName}_snapshot_{currentTimeInHours}.ss' )  
+                                    AS SNAPSHOT OF {_dbName};";
+            dbContext.Database.ExecuteSqlRaw(snapshotScript);
+            _dbContext = dbContext;
         }
 
         public void Dispose()
         {
-            using var scope = _factory.Server.Host.Services.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<SimplDbContext>();
-            //dbContext.
+            _dbContext.Database.ExecuteSqlRaw($"RESTORE DATABASE {_dbName} FROM DATABASE_SNAPSHOT = {databaseSnapshotName}");
         }
 
         [Theory]
@@ -85,7 +99,8 @@ namespace SimplCommerce.IntegrationTests.Areas.Core.Controllers
                 }
             };
             // Act
-            var response = await client.PostAsJsonAsync("api/users/grid",param);
+            var response = await client.PostJsonAsync("api/users/grid",param);            
+            Assert.Equal(200,(int)response.StatusCode);            
         }
     }
 }
