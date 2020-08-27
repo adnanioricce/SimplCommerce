@@ -28,6 +28,7 @@ using SimplCommerce.Module.Core.Extensions;
 using SimplCommerce.Module.Core.Models;
 using SimplCommerce.WebHost.IdentityServer;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace SimplCommerce.WebHost.Extensions
 {
@@ -83,6 +84,7 @@ namespace SimplCommerce.WebHost.Extensions
                     o.EnableEndpointRouting = false;
                     o.ModelBinderProviders.Insert(0, new InvariantDecimalModelBinderProvider());
                 })
+                .AddMvcOptions(opt => opt.Filters.Add<AllowAnonymousFilter>())
                 .AddRazorRuntimeCompilation()
                 .AddViewLocalization()
                 .AddModelBindingMessagesLocalizer(services)

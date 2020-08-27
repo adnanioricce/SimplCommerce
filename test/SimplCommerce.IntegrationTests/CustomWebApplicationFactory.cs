@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SimplCommerce.Infrastructure.Filters;
 using SimplCommerce.WebHost;
 
 namespace SimplCommerce.IntegrationTests
@@ -17,7 +21,9 @@ namespace SimplCommerce.IntegrationTests
                               .ConfigureWebHostDefaults(x =>
                               {
                                   x.UseStartup<TStartup>()
-                                   .UseTestServer();
+                                   .UseTestServer()
+                                   .UseUrls("localhost:49208");
+                                  x.ConfigureServices(services => services.AddSingleton<IAuthorizationHandler, AllowAnonymous>());
                               });
             return builder;
         }

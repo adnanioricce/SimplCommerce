@@ -3,9 +3,11 @@ using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +17,7 @@ using Microsoft.Extensions.WebEncoders;
 using Microsoft.OpenApi.Models;
 using SimplCommerce.Infrastructure;
 using SimplCommerce.Infrastructure.Data;
+using SimplCommerce.Infrastructure.Filters;
 using SimplCommerce.Infrastructure.Modules;
 using SimplCommerce.Infrastructure.Web;
 using SimplCommerce.Module.Core.Data;
@@ -55,9 +58,8 @@ namespace SimplCommerce.WebHost
             services.AddTransient(typeof(IRepositoryWithTypedId<,>), typeof(RepositoryWithTypedId<,>));
             services.AddScoped<SlugRouteValueTransformer>();
 
-            services.AddCustomizedLocalization();
-
-            services.AddCustomizedMvc(GlobalConfiguration.Modules);
+            services.AddCustomizedLocalization();            
+            services.AddCustomizedMvc(GlobalConfiguration.Modules);            
             services.Configure<RazorViewEngineOptions>(
                 options => { options.ViewLocationExpanders.Add(new ThemeableViewLocationExpander()); });
             services.Configure<WebEncoderOptions>(options =>
